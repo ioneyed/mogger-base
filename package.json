@@ -1,5 +1,5 @@
 {
-  "name": "mogger-ui",
+  "name": "mogger-base",
   "version": "0.0.0",
   "main": "server/app.js",
   "dependencies": {
