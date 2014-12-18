@@ -1,4 +1,9 @@
-mogger-ui
+mogger-base
 =========
 
-The UI for Mogger
+The Base application for Mogger. This contains what is needed to get Mogger up and running.
+
+Contains:
+
+Mogger UI
+Mogger NodeJS backend
