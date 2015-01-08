@@ -3,7 +3,7 @@ var fs      = require('fs'),
   Sequelize = require('sequelize'),
   lodash    = require('lodash'),
   config = require('../config/environment');
-  console.log(config.db);
+
   sequelize = new Sequelize(config.db.database, config.db.user, config.db.password,{
     host: config.db.host,
     dialect: 'postgres',
@@ -105,7 +105,6 @@ sequelize
 
 
     for(var i=0; i<tags.length; i++) {
-      console.log(i);
       if(i+1!=tags.length){
         db.Tag.build(tags[i])
         .save()
