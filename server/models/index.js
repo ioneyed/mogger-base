@@ -2,7 +2,10 @@ var fs      = require('fs'),
   path      = require('path'),
   Sequelize = require('sequelize'),
   lodash    = require('lodash'),
-  sequelize = new Sequelize('promotion_dev', 'promotion_dev', 'letmein',{
+  config = require('../config/environment');
+  console.log(config.db);
+  sequelize = new Sequelize(config.db.database, config.db.user, config.db.password,{
+    host: config.db.host,
     dialect: 'postgres',
     pool: { maxConnections: 5, maxIdleTime: 30},
     define:{
@@ -92,7 +95,7 @@ sequelize
       content: "commet 2",
       user_id: 3,
       post_id: 1,
-      parent_id: null 
+      parent_id: null
     },{
       content: "Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah ",
       user_id: 2,
@@ -144,11 +147,11 @@ sequelize
                                     }
                                   }
                                 }
-                                
+
                               });
                           }
                         }
-                      });    
+                      });
                     }
                   }
                 });
