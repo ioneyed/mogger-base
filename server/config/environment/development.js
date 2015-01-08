@@ -4,6 +4,9 @@
 // ==================================
 module.exports = {
   // MongoDB connection options
+  mongo:{
+    uri: 'mongodb://localhost/moggerui-dev',
+  },
   db: {
     host: 'localhost',
     database: 'mogger',
