@@ -14,7 +14,9 @@
     "express-session": "~1.0.2",
     "lodash": "~2.4.1",
     "method-override": "~1.0.0",
+    "moment": "^2.8.4",
     "morgan": "~1.0.0",
+    "pg": "^4.1.1",
     "sequelize": "^2.0.0-rc4",
     "serve-favicon": "~2.0.1"
   },
