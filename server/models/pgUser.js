@@ -4,6 +4,10 @@ var moment = require('moment');
 
 module.exports = function(sequelize, DataTypes) {
   var User = sequelize.define('User', {
+    guid: {
+        type        : DataTypes.STRING,
+        allowNull   : false,
+    },
     name: {
         type        : DataTypes.STRING,
         allowNull   : true
@@ -17,6 +21,17 @@ module.exports = function(sequelize, DataTypes) {
                 return this.getDataValue('email').toString().toLowerCase();
             }
         }
+    },
+    provider: {
+        type        : DataTypes.STRING,
+        allowNull   : false,
+        defaultValue: 'local'
+    },
+    role: {
+        type        : DataTypes.ENUM,
+        values      : ['user','admin','moderator'],
+        allowNull   : false,
+        defaultValue: 'user'
     },
     hashedPassword  : DataTypes.STRING,
     salt            : DataTypes.STRING
@@ -49,16 +64,29 @@ module.exports = function(sequelize, DataTypes) {
             }
             return crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64');
         },
-        userInfo: function(){
+        encrypt: function(input,salt){
+            if((!this.salt && !salt) && !input) return '';
+            if(!this.salt && !salt){
+                salt = new Buffer(this.makeSalt(),'base64');
+            }else if(!salt){
+                salt = new Buffer(this.salt,'base64');
+            }else{
+                salt = new Buffer(salt,'base64');
+            }
+            return crypto.pbkdf2Sync(input, salt, 10000, 64).toString('base64');
+        },
+        info: function(){
             return {
                 id: this.id,
                 displayName: this.displayName,
                 email:this.email,
             };
         },
-        userProfile: function(){
+        profile: function(){
             return{
                 id: this.id,
+                displayName: this.displayName,
+                email:this.email,
             };
         },
     }

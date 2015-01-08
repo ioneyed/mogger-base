@@ -12,7 +12,7 @@ module.exports = function(sequelize, DataTypes) {
     paranoid: true,
     classMethods: {
         associate: function(models) {
-            //Category.hasMany(models.Post,{foreignKey:'postId'});
+            //  Category.hasMany(models.Post,{foreignKey:'postId'});
         }
     }
   });

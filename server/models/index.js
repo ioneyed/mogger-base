@@ -104,65 +104,66 @@ sequelize
     }];
 
 
-    for(var i=0; i<tags.length; i++) {
-      if(i+1!=tags.length){
-        db.Tag.build(tags[i])
-        .save()
-      }else{
-        db.Tag.build(tags[i])
-        .save()
-        .on("success", function(){
-          for(var j=0; j<categories.length; j++) {
-            if(j+1!=categories.length){
-              db.Category
-                .build(categories[j])
-                .save();
-            }else{
-              db.Category
-                .build(categories[j])
-                .save()
-                .on("success", function(){
-                  for(var k=0; k<users.length; k++) {
-                    var u = db.User.build(users[k]);
-                    var usalt = u.makeSalt();
-                    u.hashedPassword= u.encryptPassword("password",usalt);
-                    u.salt=usalt;
-                    if(k+1!=users.length){
-                      u.save()
-                    }else{
-                      u.save().on("success", function() {
-                        if(k==users.length){
-                          for(var l=0; l<posts.length; l++) {
-                            db.Post.build(posts[l])
-                              .save()
-                              .on('success',function(post){
-                                post.setTags([Math.floor(1+Math.random()*3)]);
-                                if(post.id+1==posts.length){
-                                  for(var m=0;m<comments.length;m++){
-                                    if(m+1!=comments.length){
-                                      db.Comment.build(comments[m]).save();
-                                    }else{
-                                      db.Comment.build(comments[m]).save();
-                                    }
-                                  }
-                                }
+  //   for(var i=0; i<tags.length; i++) {
+  //     if(i+1!=tags.length){
+  //       db.Tag.build(tags[i])
+  //       .save()
+  //     }else{
+  //       db.Tag.build(tags[i])
+  //       .save()
+  //       .on("success", function(){
+  //         for(var j=0; j<categories.length; j++) {
+  //           if(j+1!=categories.length){
+  //             db.Category
+  //               .build(categories[j])
+  //               .save();
+  //           }else{
+  //             db.Category
+  //               .build(categories[j])
+  //               .save()
+  //               .on("success", function(){
+  //                 for(var k=0; k<users.length; k++) {
+  //                   var u = db.User.build(users[k]);
+  //                   var usalt = u.makeSalt();
+  //                   u.guid = u.encrypt(u.email,usalt);
+  //                   u.hashedPassword= u.encryptPassword("password",usalt);
+  //                   u.salt=usalt;
+  //                   if(k+1!=users.length){
+  //                     u.save()
+  //                   }else{
+  //                     u.save().on("success", function() {
+  //                       if(k==users.length){
+  //                         for(var l=0; l<posts.length; l++) {
+  //                           db.Post.build(posts[l])
+  //                             .save()
+  //                             .on('success',function(post){
+  //                               post.setTags([Math.floor(1+Math.random()*3)]);
+  //                               if(post.id+1==posts.length){
+  //                                 for(var m=0;m<comments.length;m++){
+  //                                   if(m+1!=comments.length){
+  //                                     db.Comment.build(comments[m]).save();
+  //                                   }else{
+  //                                     db.Comment.build(comments[m]).save();
+  //                                   }
+  //                                 }
+  //                               }
 
-                              });
-                          }
-                        }
-                      });
-                    }
-                  }
-                });
-            }
-          }
-        });
-    }
-  }
+  //                             });
+  //                         }
+  //                       }
+  //                     });
+  //                   }
+  //                 }
+  //               });
+  //           }
+  //         }
+  //       });
+  //   }
+  // }
 
 
-    if(err) console.log("An error occured %j",err);
-    else console.log("Database dropped and synchronized");
+  //   if(err) console.log("An error occured %j",err);
+  //   else console.log("Database dropped and synchronized");
 });
 
 module.exports = lodash.extend({
