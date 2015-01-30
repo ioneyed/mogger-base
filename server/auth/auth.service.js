@@ -26,7 +26,6 @@ function isAuthenticated() {
     })
     // Attach user to request
     .use(function(req, res, next) {
-      console.log(req);
       User.findById(req.user._id, function (err, user) {
         //mongoose-yeoman original
         //if (err) return next(err);
@@ -72,7 +71,6 @@ function hasRole(roleRequired) {
  * Returns a jwt token signed by the app secret
  */
 function signToken(id) {
-  console.log(id);
   return jwt.sign({ _id: id }, config.secrets.session, { expiresInMinutes: 60*5 });
 }
 

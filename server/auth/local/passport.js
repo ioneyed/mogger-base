@@ -23,7 +23,6 @@ exports.setup = function (User, config) {
 
         if (user) {
           if (!user.authenticate(password)) {
-            console.log('mongo pw fail');
             return done(null, false, { message: 'This password is not correct.' }); 
           }
           return done(null, user);
@@ -33,11 +32,9 @@ exports.setup = function (User, config) {
               if (!pgUser.authenticate(password)) {
                 return done(null, false, { message: 'This password is not correct.' });
               }
-              console.log('pg authed');
               return done(null, pgUser);
             })
             .catch(function(err){
-               console.log('pg err find');
                return done(null, false, { message: 'This email is not registered.' });
             }) 
         }

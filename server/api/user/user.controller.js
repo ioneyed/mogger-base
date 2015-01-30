@@ -67,12 +67,10 @@ exports.create = function (req, res, next) {
   pgNewUser.guid = pgNewUser.encrypt(pgNewUser.email,pgNewUser.salt);
   pgNewUser.save()
     .then(function(user){
-      console.log("user-save:",user);
       var token = jwt.sign({_id: user.guid }, config.secrets.session, { expiresInMinutes: 60*5 });
       res.json({ token: token });
     })
     .catch(function(err){
-      console.log('user-catch:',err); 
       return validationError(res, 'create');
     })
 };
@@ -87,7 +85,6 @@ exports.show = function (req, res, next) {
     if (err || !user) {
       pg.User.find({ where: {guid: userId}})
         .then(function(user){
-          console.log(user.profile);
           res.json(user.profile);
         })
         .catch(function(err){
@@ -175,18 +172,14 @@ exports.changePassword = function(req, res, next) {
  */
 exports.me = function(req, res, next) {
   var userId = req.user._id;
-  console.log(req.user);
   User.findOne({
     _id: userId
   }, '-salt -hashedPassword', function(err, user) { // don't ever give out the password or salt
-    console.log(err,user);
     if (err || !user) {
-      console.log(err,user);
       pg.User.find({ where: 
         {guid: req.user.guid}, attributes: ['name', 'email', 'guid', 'role', 'provider']})
         .then(function(user) {
           if (!user){
-            console.log(user);
              res.json(404);
           } else {
             res.json(200,user);
