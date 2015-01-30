@@ -14,8 +14,8 @@ module.exports = function(sequelize, DataTypes) {
         associate: function(models) {
             Post.belongsTo(models.User,{foreignKey:'user_id'});
             Post.belongsTo(models.Category, {foreignKey:'category_id'});
-            Post.hasMany(models.Comment,{foreignKey:'post_id'});
-            Post.hasMany(models.Tag, { through: models.PostTag });
+            Post.belongsToMany(models.Comment,{foreignKey:'post_id'});
+            Post.belongsToMany(models.Tag, { through: models.PostTag });
         }
     }
   });

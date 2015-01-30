@@ -41,6 +41,7 @@ UserSchema
   .get(function() {
     return {
       'name': this.name,
+      '_id': this._id,
       'role': this.role
     };
   });

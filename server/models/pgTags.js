@@ -12,7 +12,7 @@ module.exports = function(sequelize, DataTypes) {
     paranoid: true,
     classMethods: {
         associate: function(models) {
-            Tag.hasMany(models.Post,{ through: models.PostTag });
+            Tag.belongsToMany(models.Post,{ through: models.PostTag });
         }
     }
   });

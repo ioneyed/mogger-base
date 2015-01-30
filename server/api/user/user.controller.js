@@ -24,9 +24,27 @@ var validationError = function(res, err) {
  * restriction: 'admin'
  */
 exports.index = function(req, res) {
-  User.find({}, '-salt -hashedPassword', function (err, users) {
-    if(err) return res.send(500, err);
-    res.json(200, users);
+  User.find({'_id': {'$ne': req.user._id}}, '-salt -hashedPassword', function (err, users) {
+    if(err || users){
+      pg.User.findAll({
+        where: 
+          {'guid': {
+            ne: req.user._id.toString()}
+          }, 
+        attributes: ['name', 'email', 'guid']
+      })
+        .then(function(pgUsers){
+          pgUsers.forEach((function(pgUser){
+            users.push(pgUser.dataValues);
+          }))
+          res.json(200, users);
+        })
+        .catch(function(err){
+          return res.json(200, users);
+          //use return below once no longer using dual database
+          //return res.json(500, err);
+        })
+      }else if (err && !users) return res.send(500, err);
   });
 };
 
@@ -75,7 +93,7 @@ exports.show = function (req, res, next) {
         .catch(function(err){
           res.send(401);
         })
-    } else if (err && user) {
+    } else if (err && !user) {
       return next(err);
     }
     res.json(user.profile);
@@ -88,8 +106,25 @@ exports.show = function (req, res, next) {
  */
 exports.destroy = function(req, res) {
   User.findByIdAndRemove(req.params.id, function(err, user) {
-    if(err) return res.send(500, err);
-    return res.send(204);
+    if(err || !user) {
+      pg.User.find({ where: {guid: req.params.id}})
+        .then(function(user){
+          user.destroy()
+            .then(function(){
+              res.send(204);
+            })
+            .catch(function(err){
+              res.send(500,err);
+            });
+        })
+        .catch(function(err){
+          res.send(500, err);
+        })
+    } else if (err && !user) {
+      res.send(500, err);
+    }else{
+      res.send(204);
+    }
   });
 };
 
@@ -140,12 +175,29 @@ exports.changePassword = function(req, res, next) {
  */
 exports.me = function(req, res, next) {
   var userId = req.user._id;
+  console.log(req.user);
   User.findOne({
     _id: userId
   }, '-salt -hashedPassword', function(err, user) { // don't ever give out the password or salt
-    if (err) return next(err);
-    if (!user) return res.json(401);
-    res.json(user);
+    console.log(err,user);
+    if (err || !user) {
+      console.log(err,user);
+      pg.User.find({ where: 
+        {guid: req.user.guid}, attributes: ['name', 'email', 'guid', 'role', 'provider']})
+        .then(function(user) {
+          if (!user){
+            console.log(user);
+             res.json(404);
+          } else {
+            res.json(200,user);
+          }
+        })
+        .catch(function(err) {
+          return next(err);   
+        })
+    }else if(user){
+      res.json(200,user);
+    }
   });
 };
 
