@@ -12,7 +12,6 @@ var validationError = function(res, err) {
       data: 'Account could not be created, please contact the administrator.',
     }
   }
-  console.log(err);
   if (errs.hasOwnProperty(err)){
     return res.json(422, errs[err]);
   }
@@ -27,10 +26,10 @@ exports.index = function(req, res) {
   User.find({'_id': {'$ne': req.user._id}}, '-salt -hashedPassword', function (err, users) {
     if(err || users){
       pg.User.findAll({
-        where: 
+        where:
           {'guid': {
             ne: req.user._id.toString()}
-          }, 
+          },
         attributes: ['name', 'email', 'guid']
       })
         .then(function(pgUsers){
@@ -61,7 +60,6 @@ exports.create = function (req, res, next) {
   //   res.json({ token: token });
   // });
   var pgNewUser = pg.User.build(req.body);
-  console.log("pre-save:",pgNewUser);
   pgNewUser.salt = pgNewUser.makeSalt();
   pgNewUser.hashedPassword = pgNewUser.encryptPassword(req.body.password,pgNewUser.salt);
   pgNewUser.guid = pgNewUser.encrypt(pgNewUser.email,pgNewUser.salt);
@@ -85,7 +83,7 @@ exports.show = function (req, res, next) {
     if (err || !user) {
       pg.User.find({ where: {guid: userId}})
         .then(function(user){
-          res.json(user.profile);
+          res.json(user.profile());
         })
         .catch(function(err){
           res.send(401);
@@ -134,14 +132,24 @@ exports.changePassword = function(req, res, next) {
   var newPass = String(req.body.newPassword);
 
   User.findById(userId, function (err, user) {
-    if (err || !user) {
+    if(user){
+      if(user.authenticate(oldPass)) {
+        user.password = newPass;
+        user.save(function(err) {
+          if (err) return validationError(res, err);
+          res.send(200);
+        });
+      } else {
+        res.send(403);
+      }
+    }else{
       pg.User.find({ where: {guid: userId}})
         .then(function(user){
           if (user.authenticate(oldPass)) {
             user.hashedPassword = user.encrypt(newPass, user.salt);
             user.save()
               .then(function(){
-                res.send(200);  
+                res.send(200);
               })
               .catch(function(err){
                 return validationError(res, err);
@@ -153,15 +161,6 @@ exports.changePassword = function(req, res, next) {
         .catch(function(err){
           return validationError(res, err);
         })
-    } 
-    if(user.authenticate(oldPass)) {
-      user.password = newPass;
-      user.save(function(err) {
-        if (err) return validationError(res, err);
-        res.send(200);
-      });
-    } else {
-      res.send(403);
     }
   });
 
@@ -176,17 +175,17 @@ exports.me = function(req, res, next) {
     _id: userId
   }, '-salt -hashedPassword', function(err, user) { // don't ever give out the password or salt
     if (err || !user) {
-      pg.User.find({ where: 
-        {guid: req.user.guid}, attributes: ['name', 'email', 'guid', 'role', 'provider']})
+      pg.User.find({ where:
+      {guid: req.user.guid}, attributes: ['name', 'email', 'guid', 'role', 'provider']})
         .then(function(user) {
           if (!user){
              res.json(404);
           } else {
-            res.json(200,user);
+            res.json(200,user.profile());
           }
         })
         .catch(function(err) {
-          return next(err);   
+          return next(err);
         })
     }else if(user){
       res.json(200,user);

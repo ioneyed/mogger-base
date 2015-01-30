@@ -81,7 +81,6 @@ angular.module('moggerUiApp')
        */
       changePassword: function(oldPassword, newPassword, callback) {
         var cb = callback || angular.noop;
-
         return User.changePassword({ id: currentUser._id }, {
           oldPassword: oldPassword,
           newPassword: newPassword

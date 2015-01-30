@@ -84,9 +84,11 @@ module.exports = function(sequelize, DataTypes) {
         },
         profile: function(){
             return{
-                id: this.id,
-                displayName: this.displayName,
-                email:this.email,
+                _id: this.guid,
+                name: this.name,
+                guid: this.guid,
+                role: this.role,
+                provider: this.provider
             };
         },
     }
