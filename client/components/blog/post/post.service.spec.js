@@ -1,18 +1,18 @@
 'use strict';
 
-describe('Service: posts', function () {
+describe('Service: post', function () {
 
   // load the service's module
   beforeEach(module('moggerUiApp'));
 
   // instantiate service
-  var posts;
-  beforeEach(inject(function (_posts_) {
-    posts = _posts_;
+  var post;
+  beforeEach(inject(function (_post_) {
+    post = _post_;
   }));
 
   it('should do something', function () {
-    expect(!!posts).toBe(true);
+    expect(!!post).toBe(true);
   });
 
 });

@@ -1,6 +1,6 @@
 'use strict';
 
 angular.module('moggerUiApp')
-  .controller('PostsCtrl', function ($scope) {
+  .controller('PostCtrl', function ($scope) {
     $scope.message = 'Hello';
   });

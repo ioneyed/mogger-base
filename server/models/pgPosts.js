@@ -5,6 +5,15 @@ module.exports = function(sequelize, DataTypes) {
     content: {
         type        : DataTypes.STRING,
         allowNull   : false
+    },
+    title: {
+        type        : DataTypes.STRING,
+        allowNull   : false
+    },
+    ,
+    slug: {
+        type        : DataTypes.STRING,
+        allowNull   : false
     }
   }, {
     tableName: 'posts',

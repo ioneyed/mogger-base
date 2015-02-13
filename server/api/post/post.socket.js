@@ -4,21 +4,21 @@
 
 'use strict';
 
-var Posts = require('./posts.model');
+var Post = require('./post.model');
 
 exports.register = function(socket) {
-  Posts.schema.post('save', function (doc) {
+  Post.schema.post('save', function (doc) {
     onSave(socket, doc);
   });
-  Posts.schema.post('remove', function (doc) {
+  Post.schema.post('remove', function (doc) {
     onRemove(socket, doc);
   });
 }
 
 function onSave(socket, doc, cb) {
-  socket.emit('posts:save', doc);
+  socket.emit('post:save', doc);
 }
 
 function onRemove(socket, doc, cb) {
-  socket.emit('posts:remove', doc);
+  socket.emit('post:remove', doc);
 }
