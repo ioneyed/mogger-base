@@ -87,6 +87,7 @@ module.exports = function(sequelize, DataTypes) {
                 _id: this.guid,
                 name: this.name,
                 guid: this.guid,
+                email: this.email,
                 role: this.role,
                 provider: this.provider
             };

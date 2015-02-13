@@ -34,7 +34,7 @@ exports.index = function(req, res) {
       })
         .then(function(pgUsers){
           pgUsers.forEach((function(pgUser){
-            users.push(pgUser.dataValues);
+            users.push(pgUser.profile());
           }))
           res.json(200, users);
         })
