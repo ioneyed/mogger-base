@@ -137,7 +137,7 @@ sequelize
                             db.Post.build(posts[l])
                               .save()
                               .on('success',function(post){
-                                post.setTags([Math.floor(1+Math.random()*3)]);
+                                post.setTags([Math.floor(1+Math.random()*2)]);
                                 if(post.id+1==posts.length){
                                   for(var m=0;m<comments.length;m++){
                                     if(m+1!=comments.length){

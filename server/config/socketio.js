@@ -19,7 +19,6 @@ function onConnect(socket) {
 
   // Insert sockets below
   require('../api/post/post.socket').register(socket);
-  require('../api/posts/posts.socket').register(socket);
   require('../api/thing/thing.socket').register(socket);
 }
 
