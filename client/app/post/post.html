@@ -4,6 +4,7 @@
     Content: <textarea ng-model="post.content"></textarea><br />
     Slug: <input type="text" ng-model="post.slug" /><br />
     <input type="button" ng-click="reset()" value="Reset" />
-    <input type="submit" ng-click="update(post)" value="Save" />
+    <input type="submit" ng-click="create(post)" value="Save" />
+    <input type="text" ng-model="saved" value="" disabled/>
   </form>
 </div>

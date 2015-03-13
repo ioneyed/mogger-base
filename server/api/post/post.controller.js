@@ -23,11 +23,19 @@ exports.show = function(req, res) {
 
 // Creates a new post in the DB.
 exports.create = function(req, res) {
-  pg.Post.findOrCreate({where:{slug: req.body.slug}})
-  .spread(function(err, post) {
-    if(err) { console.log(err); return handleError(res, err); }
-    return res.json(201, post);
-  })
+  var incomingPost = pg.Post.build(req.body).generateSlug();
+  pg.Post.find({where:{slug:incomingPost.slug}}).then(function(err,post){
+    if(err){return handleError(res,err)}
+    if(!post){
+      incomingPost.save().then(function(post){
+        return res.json(201,post)
+      }).catch(function(err){
+        return handleError(res,err)
+      });
+    }else{
+      return res.json(201,post);
+    }
+  });
 };
 
 // Updates an existing post in the DB.
