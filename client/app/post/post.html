@@ -1,3 +1,9 @@
 <div class="col-md-12">
-This is the post view.
+  <form novalidate class="simple-form">
+    Title: <input type="text" ng-model="post.title" /><br />
+    Content: <textarea ng-model="post.content"></textarea><br />
+    Slug: <input type="text" ng-model="post.slug" /><br />
+    <input type="button" ng-click="reset()" value="Reset" />
+    <input type="submit" ng-click="update(post)" value="Save" />
+  </form>
 </div>

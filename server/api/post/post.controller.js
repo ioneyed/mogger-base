@@ -23,11 +23,11 @@ exports.show = function(req, res) {
 
 // Creates a new post in the DB.
 exports.create = function(req, res) {
-  pg.Post.findOrCreate({where:{title: req.body.title}})
+  pg.Post.findOrCreate({where:{slug: req.body.slug}})
   .spread(function(err, post) {
-    if(err) { return handleError(res, err); }
+    if(err) { console.log(err); return handleError(res, err); }
     return res.json(201, post);
-  });
+  })
 };
 
 // Updates an existing post in the DB.
