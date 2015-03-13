@@ -135,6 +135,7 @@ sequelize
                         if(k==users.length){
                           for(var l=0; l<posts.length; l++) {
                             db.Post.build(posts[l])
+                              .generateSlug()
                               .save()
                               .on('success',function(post){
                                 post.setTags([Math.floor(1+Math.random()*2)]);
