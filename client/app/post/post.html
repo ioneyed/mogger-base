@@ -1,10 +1,31 @@
 <div class="col-md-12">
   <form novalidate class="simple-form">
+    <h2>Create</h2>
     Title: <input type="text" ng-model="post.title" /><br />
     Content: <textarea ng-model="post.content"></textarea><br />
     Slug: <input type="text" ng-model="post.slug" /><br />
     <input type="button" ng-click="reset()" value="Reset" />
     <input type="submit" ng-click="create(post)" value="Save" />
     <input type="text" ng-model="saved" value="" disabled/>
+  </form>
+
+  <form novalidate class="simple-form">
+    <h2>Delete</h2>
+    ID: <input type="text" ng-model="post._id" /><br />
+    Slug: <input type="text" ng-model="post.slug" /><br />
+    <input type="button" ng-click="reset()" value="Reset" />
+    <input type="submit" ng-click="destroy(post)" value="Delete" />
+    <input type="text" ng-model="deleted" value="" disabled/>
+  </form>
+
+  <form novalidate class="simple-form">
+    <h2>Update</h2>
+    ID: <input type="text" ng-model="post._id" /><br />
+    Title: <input type="text" ng-model="post.title" /><br />
+    Content: <textarea ng-model="post.content"></textarea><br />
+    Slug: <input type="text" ng-model="post.slug" /><br />
+    <input type="button" ng-click="reset()" value="Reset" />
+    <input type="submit" ng-click="update(post)" value="Update" />
+    <input type="text" ng-model="updated" value="" disabled/>
   </form>
 </div>

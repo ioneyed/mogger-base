@@ -2,7 +2,7 @@
 
 module.exports = function(sequelize, DataTypes) {
   var Tag = sequelize.define('Tag', {
-    typeValue: {
+    name: {
       type : DataTypes.STRING,
       allowNull : false
     }
@@ -16,6 +16,6 @@ module.exports = function(sequelize, DataTypes) {
         }
     }
   });
- 
+
   return Tag;
 };

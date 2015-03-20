@@ -1,0 +1,3 @@
+rb - investigate autocomplete function for tags and categories
+any - lookup join queries with sequelize
+keener - download mogger-base, look at raml and implement (create base object on each endpoint and extend the base object on return) look at raml base for each endpoint

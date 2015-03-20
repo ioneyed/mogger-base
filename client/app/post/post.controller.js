@@ -12,12 +12,21 @@ angular.module('moggerUiApp')
 
     $scope.create = function(post){
       var res = new Post(post);
-      res.$save().then(function(res){ $scope.saved = "saved"; console(res);})
-                 .catch(function(req){$scope.saved = req.data.slug+ " - Already Exists"; console.log(req)})
+      res.$save().then(function(res){$scope.saved = "Saved"; console.log(res);})
+                 .catch(function(req){$scope.saved = req.data.slug+ " - Already exists"; console.log(req)})
     }
 
-    //TODO Create a Delete and an Update function similar to the $scope.create function
-    //Display the error when it comes back, display that the event was successful.
-    //Follow JKISS (Just Keep it Simple, Stupid).
-    
+    //destroy function
+    $scope.destroy = function(post) {
+      var res = new Post(post);
+      res.$remove().then(function(res){$scope.deleted = "Deleted"; console.log(res);})
+                 .catch(function(req){$scope.deleted = req.data.slug+ " - Unable to delete post"; console.log(req)})
+    }
+
+    //update function
+    $scope.update = function(post) {
+      var res = new Post(post);
+      res.$update().then(function(res){$scope.updated = "Updated Post"; console.log(res);})
+                 .catch(function(req){$scope.updated = req.data.slug+ " - Unable to update post"; console.log(req)})
+    }
   });

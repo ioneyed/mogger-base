@@ -41,26 +41,30 @@ exports.create = function(req, res) {
 // Updates an existing post in the DB.
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
-  pg.Post.find(req.params.id).then(function (err, post) {
-    if (err) { return handleError(res, err); }
+  pg.Post.find(req.params.id).then(function (post) {
     if(!post) { return res.send(404); }
     var updated = _.merge(post, req.body);
-    updated.save(function (err) {
-      if (err) { return handleError(res, err); }
+    updated.save().then(function (post) {
       return res.json(200, post);
+    }).catch(function(err){
+      if (err) { return handleError(res, err); }
     });
+  }).catch(function(err){
+    if (err) { return handleError(res, err); }
   });
 };
 
 // Deletes a post from the DB.
 exports.destroy = function(req, res) {
-  pg.Post.find(req.params.id).then(function (err, post) {
-    if(err) { return handleError(res, err); }
+  pg.Post.find(req.params.id).then(function (post) {
     if(!post) { return res.send(404); }
-    post.remove(function(err) {
-      if(err) { return handleError(res, err); }
+    post.destroy().then(function() {
       return res.send(204);
+    }).catch(function(err){
+      if(err) { return handleError(res, err); }
     });
+  }).catch(function(err){
+    if(err) { return handleError(res, err); }
   });
 };
 
