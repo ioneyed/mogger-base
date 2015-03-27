@@ -1,3 +1,68 @@
 rb - investigate autocomplete function for tags and categories
 any - lookup join queries with sequelize
 keener - download mogger-base, look at raml and implement (create base object on each endpoint and extend the base object on return) look at raml base for each endpoint
+
+dbpost = {
+  title:"title",
+  pid:5,
+  content:"Content content, content content content! Content content content content.",
+  category:"jquery",
+  created: "10/10/30 10:10:10",
+  modified: "10/20/30 10:10:10",
+  deletedAt: null,
+};
+
+Post = function(clazz) {
+
+  this.title=null;
+  this.pid=null;
+  this.content=null;
+  this.category=null;
+  this.created=null;
+  this.modified=null;
+  this.deletedAt=null;
+  this._links={
+    this.self={"href":this._meta.uri+this._meta.name.plural+"/"+this.pid+""};
+    this.comments={"href":this._meta.uri+this._meta.name.plural+"/"+this.pid+"/comments"};
+    this.related={"href":this._meta.uri+this._meta.name.plural+"/"+this.pid+"/related"};
+  };
+
+  if(typeof clazz != 'undefined') {
+    for(var property in clazz) {
+      if(this.hasOwnProperty(property)) {
+        this[property]=clazz[property];
+      }
+    }
+  }
+  this._meta = {
+    "uri": "/api/",
+    "name": {
+      "single": "Post",
+      "plural": "Posts",
+    },
+    "template": {},
+  };
+};
+
+poster = new Post(dbpost);
+console.log(poster._links);
+console.log(poster);
+
+
+
+//Links = function(_meta,pid) {
+//  this.self={"href": _meta.uri+_meta.name.plural+"/"+pid+""};
+//  this.comments={"href":_meta.uri+_meta.name.plural+"/"+pid+"/comments"};
+//  this.related={"href":_meta.uri+_meta.name.plural+"/"+pid+"/related"};
+//  this.pagination={};
+//};
+
+// "_links": {
+//    "self":{ "href":"/api/{:category}/posts/{:pid}" },
+//    "comments":{"href":"/api/{:category}/posts/{:pid}/comments"},
+//    "related":{"href":"/api/{:category}/posts/{:pid}/related"},
+//    "pagination":{
+//      "next": {"href":"/api/{:category}/posts/{:pid}/next"},
+//      "prev":{"href":"/api/{:category}/posts/{:pid}/prev"},
+//      "range":{
+//(typeof clazz !='undefined' && (clazz.hasOwnProperty("pid") && clazz.hasOwnProperty("category"))) ? new Links(this._meta,clazz.pid,clazz.category) : null;
